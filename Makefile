@@ -5,14 +5,14 @@
 #
 
 # select underlaying LCGL display driver (SDL2 || X11)
-LV_DRIVER          := X11
-#LV_DRIVER          := SDL2
+# LV_DRIVER          := X11
+LV_DRIVER          := SDL2
 
 PROJECT 			?= lvgl-demo
 MAKEFLAGS 			:= -j $(shell nproc)
 SRC_EXT      		:= c
 OBJ_EXT				:= o
-CC 					?= gcc
+CC 					?= clang
 
 SRC_DIR				:= ./
 WORKING_DIR			:= ./build
@@ -41,7 +41,7 @@ endif
 DEFINES				:= -D SIMULATOR=1 -D LV_BUILD_TEST=0 -D $(LV_DRIVER_USE)
 
 # Include simulator inc folder first so lv_conf.h from custom UI can be used instead
-INC 				:= -I./ui/simulator/inc/ -I./ -I./lvgl/ #-I/usr/include/freetype2 -L/usr/local/lib
+INC := -I./ui/simulator/inc/ -I./ -I./lvgl/ -I/usr/local/Cellar/sdl2/2.30.0/include/SDL2/ #-I/usr/include/freetype2 -L/usr/local/lib
 LDLIBS	 			:= -l$(LV_DRIVER) -lpthread -lm #-lfreetype -lavformat -lavcodec -lavutil -lswscale -lm -lz
 BIN 				:= $(BIN_DIR)/demo
 
@@ -60,7 +60,7 @@ $(BUILD_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT) lv_demo_conf.h lv_conf.h Make
 
 $(BIN): $(OBJECTS)
 	@mkdir -p $(BIN_DIR)
-	$(CC) -o $(BIN) $(OBJECTS) $(LDFLAGS) ${LDLIBS}
+	$(CC) -o $(BIN) $(OBJECTS) $(LDFLAGS) ${LDLIBS} `sdl2-config --cflags --libs`
 
 clean:
 	rm -rf $(WORKING_DIR)

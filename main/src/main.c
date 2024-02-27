@@ -17,7 +17,7 @@
 #include "lvgl/demos/lv_demos.h"
 #if USE_SDL
   #define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" issue*/
-  #include <SDL2/SDL.h>
+  #include <SDL.h>
   #include "lv_drivers/sdl/sdl.h"
 #elif USE_X11
   #include "lv_drivers/x11/x11.h"
